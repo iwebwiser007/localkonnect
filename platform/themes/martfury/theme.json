@@ -1,0 +1,7 @@
+{
+    "name": "Emart",
+    "namespace": "Theme\\Martfury\\",
+    "description": "Emart - Laravel Ecommerce System",
+    "author": "wissenalpha Technologies",
+    "required_plugins": []
+}

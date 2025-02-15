@@ -1,0 +1,2 @@
+[03-Nov-2024 06:56:05 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/wissenal/public_html/emart.wissenalpha.in/vendor/composer/platform_check.php on line 28
+[03-Nov-2024 06:56:48 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/wissenal/public_html/emart.wissenalpha.in/vendor/composer/platform_check.php on line 28
