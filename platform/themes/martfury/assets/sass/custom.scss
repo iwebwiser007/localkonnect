@@ -2431,3 +2431,69 @@ nav.navigation--mobile-product > .ps-btn {
     height: 40px;
     padding: 5px;
 }
+
+
+
+
+// ///////////
+// .ps-block--category {
+//     transition: all 0.3s ease-in-out;
+//     &:hover {
+//         transform: scale(1.1);
+//     }
+// }
+
+
+
+/* Full-Width container for the carousel */
+.ps-container-fluid {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh; /* Full screen height */
+}
+
+/* Make carousel full screen */
+.carousel-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Carousel item setup to fit 7 images per slide */
+.carousel-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Make images fill the screen, like LocalKonnect */
+.ps-block--category {
+    flex: 0 0 14.2857%;  /* 100% / 7 images = 14.2857% */
+    max-width: 14.2857%;
+    padding: 10px;
+}
+
+/* Make images responsive, full screen */
+.category-image {
+    width: 100%;
+    height: auto;
+}
+
+/* Optional: Hide scrollbar */
+.carousel-inner::-webkit-scrollbar {
+    display: none;  /* Hide scrollbar */
+}
+
+/* Background image for full screen, like LocalKonnect */
+.carousel-item img {
+    object-fit: cover;  /* Ensure the image covers the full container */
+    width: 100%;
+    height: 100vh;  /* Make the image take full height of the viewport */
+}
+
+
+
+// ////
