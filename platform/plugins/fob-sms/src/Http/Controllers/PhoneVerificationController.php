@@ -11,16 +11,33 @@ use FriendsOfBotble\Sms\Facades\Guard;
 use FriendsOfBotble\Sms\Facades\Otp as OtpFacade;
 use FriendsOfBotble\Sms\Forms\PhoneVerificationForm;
 use FriendsOfBotble\Sms\Http\Requests\PhoneVerificationRequest;
+use FriendsOfBotble\Sms\Actions\SendOtpAction;
+use Session;
+
 
 class PhoneVerificationController extends BaseController
 {
-    public function index()
+    public function index(SendOtpAction $sendOtpAction)
     {
         SeoHelper::setTitle(__('Phone Number Verification'));
 
-        $form = PhoneVerificationForm::create();
+        $userdata   = auth(Guard::getGuard())->user();
+        $form       = PhoneVerificationForm::create();
         $identifier = auth(Guard::getGuard())->user()->phone;
         $expiryTime = OtpFacade::getExpiryTime($identifier);
+
+        
+
+        if($userdata->phone_verified_at =="" || $userdata->phone_verified_at ==null){
+            $sms_send = Session::get('sms_send');
+
+            if($sms_send !="yes"){
+                $sendOtpAction($identifier);
+                Session::put('sms_send','yes');
+            }
+
+        }
+
 
         return Theme::scope(
             'otp.verify',
