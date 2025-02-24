@@ -18,20 +18,24 @@ class EnsureLicenseHasBeenActivated
         if (
             ! is_in_admin(true)
             || Auth::guest()
-            || $this->core->isSkippedLicenseReminder()
-            || $this->core->verifyLicense(true)
+            // || $this->core->isSkippedLicenseReminder()
+            // || $this->core->verifyLicense(true)
         ) {
             return $next($request);
         }
 
-        $whitelistRoutes = [
-            'unlicensed',
-            'unlicensed.skip',
-            'settings.license.activate',
-        ];
+        // $whitelistRoutes = [
+        //     'unlicensed',
+        //     'unlicensed.skip',
+        //     'settings.license.activate',
+        // ];
 
-        if (! $request->routeIs($whitelistRoutes)) {
-            return redirect()->route('unlicensed', ['redirect_url' => $request->fullUrl()]);
+        // if (! $request->routeIs($whitelistRoutes)) {
+        //     return redirect()->route('unlicensed', ['redirect_url' => $request->fullUrl()]);
+        // }
+
+        if ($this->core->verifyLicense(true)) {
+            return redirect()->route('dashboard.index');
         }
 
         return $next($request);

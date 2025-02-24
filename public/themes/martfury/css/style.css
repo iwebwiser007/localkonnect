@@ -2407,6 +2407,7 @@ textarea.form-control {
 .ps-block--category p {
   font-size: 14px;
   margin-bottom: 0;
+  font-weight: 700;
 }
 .ps-block--category:hover {
   border-color: var(--color-1st);
@@ -12714,7 +12715,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 .header .header__top {
   background-color: #227B94;
-  border-bottom: 1px solid white !important; 
+  border-bottom: 1px solid white !important;
   padding: 25px 0;
 }
 .header .header__top .container,
