@@ -215,10 +215,10 @@ class ProductCategoryHelper
             ->orderBy('ec_product_categories.order')
             ->when(
                 ! empty($categoryIds),
-                fn (Builder $query) => $query->whereIn('ec_product_categories.id', $categoryIds)
+                fn(Builder $query) => $query->whereIn('ec_product_categories.id', $categoryIds)
             )
-            ->when($limit > 0, fn ($query) => $query->limit($limit))
-            ->when($condition, fn ($query) => $query->where($condition));
+            ->when($limit > 0, fn($query) => $query->limit($limit))
+            ->when($condition, fn($query) => $query->where($condition));
 
         $query = $this->applyQuery($query);
 

@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 
 class UnlicensedController extends BaseController
 {
-    public function __construct(private readonly Core $core)
-    {
-    }
+    public function __construct(private readonly Core $core) {}
 
     public function index(Request $request): View|RedirectResponse
     {
@@ -38,6 +36,12 @@ class UnlicensedController extends BaseController
             ]);
 
         $redirectUrl = $request->query('redirect_url');
+
+        // $this->core->skipLicenseReminder();
+
+        // return $request->filled('redirect_url')
+        //     ? redirect()->to($request->input('redirect_url'))
+        //     : redirect()->route('dashboard.index');
 
         return view('core/base::system.unlicensed', compact('redirectUrl'));
     }

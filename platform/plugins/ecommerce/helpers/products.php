@@ -111,26 +111,26 @@ if (! function_exists('get_top_rated_products')) {
         $topProductIds = get_top_rated_product_ids($limit);
 
         return get_products(array_merge([
-                'condition' => [
-                    ['ec_products.id', 'IN', $topProductIds],
-                    'ec_products.is_variation' => 0,
-                ],
-                'order_by' => [
-                    'reviews_avg' => 'DESC',
-                    'ec_products.order' => 'ASC',
-                    'ec_products.created_at' => 'DESC',
-                ],
-                'take' => null,
-                'paginate' => [
-                    'per_page' => null,
-                    'current_paged' => 1,
-                ],
-                'select' => [
-                    'ec_products.*',
-                ],
-                'with' => $with,
-                'withCount' => $withCount,
-            ], EcommerceHelper::withReviewsParams()));
+            'condition' => [
+                ['ec_products.id', 'IN', $topProductIds],
+                'ec_products.is_variation' => 0,
+            ],
+            'order_by' => [
+                'reviews_avg' => 'DESC',
+                'ec_products.order' => 'ASC',
+                'ec_products.created_at' => 'DESC',
+            ],
+            'take' => null,
+            'paginate' => [
+                'per_page' => null,
+                'current_paged' => 1,
+            ],
+            'select' => [
+                'ec_products.*',
+            ],
+            'with' => $with,
+            'withCount' => $withCount,
+        ], EcommerceHelper::withReviewsParams()));
     }
 }
 
@@ -187,14 +187,43 @@ if (! function_exists('get_featured_product_categories')) {
         //     ->limit(8)
         //     ->get();
 
-        return ProductCategory::query()
+        // return ProductCategory::query()
+        //     ->wherePublished()
+        //     ->where('parent_id', '0')
+        //     ->whereIn('id', [100, 29, 31, 16, 2, 28, 34, 35])
+        //     ->orderByRaw("FIELD(id, 100, 29, 31, 16, 2, 28, 34, 35)")
+        //     ->with('slugable')
+        //     ->limit(8)
+        //     ->get();
+
+        // return ProductCategory::query()
+        //     ->wherePublished()
+        //     ->where('parent_id', '0')
+        //     ->whereIn('id', [100, 29, 31, 16, 2, 28, 34, 35])
+        //     ->orderByRaw("FIELD(id, 100, 29, 31, 16, 2, 28, 34, 35) ASC")
+        //     ->orderBy('id')
+        //     ->with('slugable')
+        //     ->get();
+
+        $priorityIds = [100, 29, 31, 16, 2, 28, 34, 35];
+
+        $priorityCategories = ProductCategory::query()
             ->wherePublished()
-            ->where('parent_id', '0')
-            ->whereIn('id', [100, 29, 31, 16, 2, 28, 34, 35])
-            ->orderByRaw("FIELD(id, 100, 29, 31, 16, 2, 28, 34, 35)")
+            ->where('parent_id', 0)
+            ->whereIn('id', $priorityIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $priorityIds) . ") ASC")
             ->with('slugable')
-            ->limit(8)
             ->get();
+
+        $remainingCategories = ProductCategory::query()
+            ->wherePublished()
+            ->where('parent_id', 0)
+            ->whereNotIn('id', $priorityIds)
+            ->orderBy('id')
+            ->with('slugable')
+            ->get();
+        
+        return $priorityCategories->merge($remainingCategories);
     }
 }
 

@@ -111,7 +111,7 @@ final class Core
                 $this->skipLicenseReminderFilePath,
                 encrypt($ttl->toIso8601String())
             );
-        } catch (UnableToWriteFile|Throwable) {
+        } catch (UnableToWriteFile | Throwable) {
             throw UnableToWriteFile::atLocation($this->skipLicenseReminderFilePath);
         }
 
@@ -154,11 +154,13 @@ final class Core
 
     public function checkConnection(): bool
     {
-        return $this->cache->remember(
-            "license:{$this->getLicenseCacheKey()}:check_connection",
-            Carbon::now()->addDays($this->verificationPeriod),
-            fn () => rescue(fn () => $this->createRequest('check_connection_ext')->ok()) ?: false
-        );
+        return
+            $this->cache->remember(
+                "license:{$this->getLicenseCacheKey()}:check_connection",
+                Carbon::now()->addDays($this->verificationPeriod),
+                fn() => rescue(fn() => $this->createRequest('check_connection_ext')->ok()) ?:
+                    false
+            );
     }
 
     public function version(): string
@@ -206,7 +208,7 @@ final class Core
 
         try {
             $this->files->put($this->licenseFilePath, Arr::get($data, 'lic_response'), true);
-        } catch (UnableToWriteFile|Throwable) {
+        } catch (UnableToWriteFile | Throwable) {
             throw UnableToWriteFile::atLocation($this->licenseFilePath);
         }
 
@@ -241,7 +243,6 @@ final class Core
             if ($now->greaterThan($lastCheckedDate) && $verified = $this->verifyLicenseDirectly()) {
                 Session::put($cachesKey, $now->format($dateFormat));
             }
-
             return $verified;
         }
 
@@ -262,7 +263,7 @@ final class Core
 
         return tap(
             $this->createDeactivateRequest($data),
-            fn () => LicenseRevoked::dispatch($license, $client)
+            fn() => LicenseRevoked::dispatch($license, $client)
         );
     }
 
@@ -283,7 +284,7 @@ final class Core
 
         return tap(
             $this->createDeactivateRequest($data),
-            fn () => LicenseDeactivated::dispatch()
+            fn() => LicenseDeactivated::dispatch()
         );
     }
 
@@ -359,7 +360,7 @@ final class Core
 
             try {
                 $this->files->put($filePath, $response->body());
-            } catch (UnableToWriteFile|Throwable) {
+            } catch (UnableToWriteFile | Throwable) {
                 throw UnableToWriteFile::atLocation($filePath);
             }
         }
@@ -526,7 +527,7 @@ final class Core
 
         $migrator = app('migrator');
 
-        rescue(fn () => $migrator->run(database_path('migrations')));
+        rescue(fn() => $migrator->run(database_path('migrations')));
 
         $paths = [
             core_path(),

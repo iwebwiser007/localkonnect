@@ -78,9 +78,9 @@ class OrderSupportServiceProvider extends ServiceProvider
         }
 
         return $query->where(
-            fn (Builder $query) => $query
-            ->whereNull('store_id')
-            ->orWhereIn('store_id', $storeIds)
+            fn(Builder $query) => $query
+                ->whereNull('store_id')
+                ->orWhereIn('store_id', $storeIds)
         );
     }
 
@@ -1284,7 +1284,7 @@ class OrderSupportServiceProvider extends ServiceProvider
                     $vendorInfo->save();
 
                     DB::commit();
-                } catch (Throwable|Exception $th) {
+                } catch (Throwable | Exception $th) {
                     DB::rollBack();
 
                     return BaseHttpResponse::make()
@@ -1344,7 +1344,7 @@ class OrderSupportServiceProvider extends ServiceProvider
                     $feePercentage = MarketplaceHelper::getSetting('fee_per_order', 0);
                     $fee = $refundAmount * ($feePercentage / 100);
                 } else {
-                    $products = $orderReturn->items->map(fn ($item) => $item->product);
+                    $products = $orderReturn->items->map(fn($item) => $item->product);
                     $fee = $this->calculatorCommissionFeeByProduct($products);
                 }
                 $fee = $fee * -1;

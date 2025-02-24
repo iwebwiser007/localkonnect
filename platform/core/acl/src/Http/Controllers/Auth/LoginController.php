@@ -35,6 +35,7 @@ class LoginController extends BaseController
 
     public function login(LoginRequest $request)
     {
+
         $request->merge([$this->username() => $request->input('username')]);
 
         $this->validateLogin($request);
